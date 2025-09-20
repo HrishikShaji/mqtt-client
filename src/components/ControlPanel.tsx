@@ -11,6 +11,8 @@ import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Activity, Thermometer, Droplets, Zap, Power, Wifi, WifiOff, Send, MapPin, Gauge } from "lucide-react"
+import TemperatureSensor from "./TemperatureSensor"
+import { formatValue, getStatusColor } from "@/lib/utils"
 
 export default function ControlPanel() {
 	const [client, setClient] = useState<MqttClient | null>(null)
@@ -19,13 +21,6 @@ export default function ControlPanel() {
 	const [connectionStatus, setConnectionStatus] = useState("Disconnected")
 
 	// Individual sensor states
-	const [temperatureData, setTemperatureData] = useState({
-		temperature: 25.0,
-		humidity: 60.0,
-		sensor: "DHT22",
-		location: "Living Room",
-		enabled: true
-	})
 
 	const [waterLevelData, setWaterLevelData] = useState({
 		level: 75,
@@ -50,7 +45,6 @@ export default function ControlPanel() {
 	})
 
 	// Location and configuration options
-	const locations = ["Living Room", "Kitchen", "Bedroom", "Bathroom", "Garage", "Basement", "Attic", "Outdoor"]
 	const tankLocations = ["Main Tank", "Backup Tank", "Storage Tank", "Emergency Tank", "Roof Tank"]
 	const tankCapacities = [500, 750, 1000, 1500, 2000, 2500, 3000, 5000]
 
@@ -124,11 +118,6 @@ export default function ControlPanel() {
 		}
 	}
 
-	const handleTemperatureChange = (field, value) => {
-		const newData = { ...temperatureData, [field]: value }
-		setTemperatureData(newData)
-		publishSensorData("sensors/temperature", newData, "Temperature")
-	}
 
 	const handleWaterLevelChange = (field, value) => {
 		const newData = { ...waterLevelData, [field]: value }
@@ -142,24 +131,7 @@ export default function ControlPanel() {
 		publishSensorData("sensors/power", newData, "Power")
 	}
 
-	const getStatusColor = (value, type) => {
-		switch (type) {
-			case "temperature":
-				if (value < 20) return "text-blue-600 dark:text-blue-400"
-				if (value > 30) return "text-red-600 dark:text-red-400"
-				return "text-green-600 dark:text-green-400"
-			case "waterLevel":
-				if (value < 20) return "text-red-600 dark:text-red-400"
-				if (value < 50) return "text-yellow-600 dark:text-yellow-400"
-				return "text-green-600 dark:text-green-400"
-			default:
-				return "text-muted-foreground"
-		}
-	}
-
-	const formatValue = (value, decimals = 1) => {
-		return typeof value === 'number' ? value.toFixed(decimals) : value
-	}
+	if (!client) return null
 
 	return (
 		<div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
@@ -224,116 +196,10 @@ export default function ControlPanel() {
 				{/* Sensor Controls Grid */}
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 					{/* Temperature Sensor Control */}
-					<Card className="border-2">
-						<CardHeader>
-							<div className="flex items-center justify-between">
-								<div className="flex items-center gap-2">
-									<Thermometer className="h-5 w-5" />
-									<div>
-										<CardTitle>Temperature Sensor</CardTitle>
-										<CardDescription>DHT22 - {temperatureData.location}</CardDescription>
-									</div>
-								</div>
-								<div className="flex items-center space-x-2">
-									<Switch
-										checked={temperatureData.enabled}
-										onCheckedChange={(checked) => handleTemperatureChange("enabled", checked)}
-										disabled={!isConnected}
-									/>
-									<Badge variant={temperatureData.enabled ? "default" : "secondary"}>
-										{temperatureData.enabled ? "ON" : "OFF"}
-									</Badge>
-								</div>
-							</div>
-						</CardHeader>
-						<CardContent className="space-y-6">
-							{/* Current Display */}
-							<div className="text-center p-4 bg-muted/50 rounded-lg">
-								<div className={`text-3xl font-bold ${getStatusColor(temperatureData.temperature, "temperature")}`}>
-									{formatValue(temperatureData.temperature)}°C
-								</div>
-								<div className="text-lg text-muted-foreground mt-1">
-									{formatValue(temperatureData.humidity)}% humidity
-								</div>
-							</div>
-
-							{/* Temperature Slider */}
-							<div className="space-y-3">
-								<div className="flex items-center justify-between">
-									<Label className="flex items-center gap-2">
-										<Thermometer className="h-4 w-4" />
-										Temperature
-									</Label>
-									<span className="text-sm font-medium">{formatValue(temperatureData.temperature)}°C</span>
-								</div>
-								<Slider
-									value={[temperatureData.temperature]}
-									onValueChange={(value) => handleTemperatureChange("temperature", value[0])}
-									max={45}
-									min={-10}
-									step={0.1}
-									disabled={!isConnected || !temperatureData.enabled}
-									className="w-full"
-								/>
-								<div className="flex justify-between text-xs text-muted-foreground">
-									<span>-10°C</span>
-									<span>45°C</span>
-								</div>
-							</div>
-
-							{/* Humidity Slider */}
-							<div className="space-y-3">
-								<div className="flex items-center justify-between">
-									<Label className="flex items-center gap-2">
-										<Droplets className="h-4 w-4" />
-										Humidity
-									</Label>
-									<span className="text-sm font-medium">{formatValue(temperatureData.humidity)}%</span>
-								</div>
-								<Slider
-									value={[temperatureData.humidity]}
-									onValueChange={(value) => handleTemperatureChange("humidity", value[0])}
-									max={100}
-									min={0}
-									step={0.1}
-									disabled={!isConnected || !temperatureData.enabled}
-									className="w-full"
-								/>
-								<div className="flex justify-between text-xs text-muted-foreground">
-									<span>0%</span>
-									<span>100%</span>
-								</div>
-							</div>
-
-							{/* Location Dropdown */}
-							<div className="space-y-2">
-								<Label className="flex items-center gap-2">
-									<MapPin className="h-4 w-4" />
-									Location
-								</Label>
-								<Select
-									value={temperatureData.location}
-									onValueChange={(value) => handleTemperatureChange("location", value)}
-									disabled={!isConnected || !temperatureData.enabled}
-								>
-									<SelectTrigger>
-										<SelectValue />
-									</SelectTrigger>
-									<SelectContent>
-										{locations.map((location) => (
-											<SelectItem key={location} value={location}>{location}</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-							</div>
-
-							<div className="flex items-center gap-2 text-xs text-muted-foreground">
-								<Send className="h-3 w-3" />
-								<span>Auto-publishes to sensors/temperature</span>
-							</div>
-						</CardContent>
-					</Card>
-
+					<TemperatureSensor
+						isConnected={isConnected}
+						client={client}
+					/>
 					{/* Water Level Sensor Control */}
 					<Card className="border-2">
 						<CardHeader>
