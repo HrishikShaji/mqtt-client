@@ -1,8 +1,8 @@
-import SwitchControl from "@/components/SwitchControl";
+import ControlPanel from "@/components/ControlPanel";
 import Image from "next/image";
 
 export default function Home() {
 	return (
-		<SwitchControl />
+		<ControlPanel />
 	);
 }
