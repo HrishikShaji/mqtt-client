@@ -6,7 +6,7 @@ import { Label } from "./ui/label";
 import { Slider } from "./ui/slider";
 import { Select } from "./ui/select"
 import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MqttClient } from "mqtt";
 import { formatValue, getStatusColor } from "@/lib/utils";
 import { Progress } from "./ui/progress";
@@ -30,6 +30,11 @@ export default function WaterSensor({ client, isConnected }: Props) {
 		enabled: true,
 		alertsEnabled: true
 	})
+
+	useEffect(() => {
+		publishSensorData(waterLevelData)
+	}, [])
+
 	const publishSensorData = (data: WaterSensorType) => {
 		if (client && isConnected && data.enabled) {
 			const message = {

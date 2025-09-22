@@ -1,3 +1,9 @@
+export interface SwitchSensorType {
+	state: boolean;
+	timestamp: string;
+	device: string;
+}
+
 export interface PowerSensorType {
 	voltage: number;
 	current: number;

@@ -6,7 +6,7 @@ import { Label } from "./ui/label";
 import { Slider } from "./ui/slider";
 import { Select } from "./ui/select"
 import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MqttClient } from "mqtt";
 import { formatValue, getStatusColor } from "@/lib/utils";
 import { TemperatureSensorType } from "@/types/sensor-types";
@@ -32,6 +32,10 @@ export default function TemperatureSensor({ client, isConnected }: Props) {
 		setTemperatureData(newData)
 		publishSensorData(newData)
 	}
+
+	useEffect(() => {
+		publishSensorData(temperatureData)
+	}, [])
 
 	const publishSensorData = (data: TemperatureSensorType) => {
 		if (client && isConnected && data.enabled) {
