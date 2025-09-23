@@ -17,7 +17,7 @@ export default function ControlPanel() {
 
 	useEffect(() => {
 		// Connect to MQTT broker via WebSocket
-		const mqttClient = mqtt.connect("ws://localhost:8883")
+		const mqttClient = mqtt.connect("ws://localhost:4000")
 
 		mqttClient.on("connect", () => {
 			console.log("Connected to MQTT broker")
