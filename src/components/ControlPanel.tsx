@@ -9,6 +9,7 @@ import WaterSensor from "./WaterSensor"
 import PowerSensor from "./PowerSensor"
 import { Power, Wifi, WifiOff } from "lucide-react"
 import SwitchControl from "./SwitchControl"
+import { SERVER_URL } from "@/lib/variables"
 
 export default function ControlPanel() {
 	const [client, setClient] = useState<MqttClient | null>(null)
@@ -17,7 +18,7 @@ export default function ControlPanel() {
 
 	useEffect(() => {
 		// Connect to MQTT broker via WebSocket
-		const mqttClient = mqtt.connect("ws://localhost:4000")
+		const mqttClient = mqtt.connect(SERVER_URL)
 
 		mqttClient.on("connect", () => {
 			console.log("Connected to MQTT broker")
