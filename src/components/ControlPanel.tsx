@@ -18,7 +18,15 @@ export default function ControlPanel() {
 
 	useEffect(() => {
 		// Connect to MQTT broker via WebSocket
-		const mqttClient = mqtt.connect(SERVER_URL)
+		const mqttClient = mqtt.connect(SERVER_URL, {
+			clientId: `switch-client-${Math.random().toString(16).substr(2, 8)}`,
+			clean: true,
+			keepalive: 60,
+			reconnectPeriod: 1000,
+			connectTimeout: 30000,
+			protocolVersion: 4, // MQTT 3.1.1
+			queueQoSZero: false, // Don't queue QoS 0 messages when offline
+		})
 
 		mqttClient.on("connect", () => {
 			console.log("Connected to MQTT broker")

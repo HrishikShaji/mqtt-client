@@ -42,7 +42,7 @@ export default function WaterSensor({ client, isConnected }: Props) {
 				timestamp: new Date().toISOString()
 			}
 
-			client.publish("sensors/waterlevel", JSON.stringify(message), (err) => {
+			client.publish("sensors/waterlevel", JSON.stringify(message), { qos: 0, retain: true }, (err) => {
 				if (err) {
 					console.error(`Publish error for water:`, err)
 				} else {

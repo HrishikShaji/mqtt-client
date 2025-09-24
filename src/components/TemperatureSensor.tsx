@@ -44,7 +44,7 @@ export default function TemperatureSensor({ client, isConnected }: Props) {
 				timestamp: new Date().toISOString()
 			}
 
-			client.publish("sensors/temperature", JSON.stringify(message), (err) => {
+			client.publish("sensors/temperature", JSON.stringify(message), { qos: 0, retain: true }, (err) => {
 				if (err) {
 					console.error(`Publish error for Temperature:`, err)
 				} else {

@@ -37,7 +37,7 @@ export default function SwitchControl({ client, isConnected }: Props) {
 				device: "main-switch",
 			}
 
-			client.publish("switch/state", JSON.stringify(message), (err) => {
+			client.publish("switch/state", JSON.stringify(message), { qos: 0, retain: true }, (err) => {
 				if (err) {
 					console.error("Publish error:", err)
 				} else {
