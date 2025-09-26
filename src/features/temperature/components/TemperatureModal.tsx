@@ -27,12 +27,12 @@ export default function TemperatureModal({ isConnected, temperatureData, onChang
 			<DialogTrigger className="cursor-pointer text-white hover:text-blue-500">
 				<Settings2 />
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="sm:max-w-[425px] space-y-5  bg-black/20 dark:bg-black/10 backdrop-blur-xl border border-white/20 ">
 				<DialogHeader>
-					<DialogTitle>Update Sensor</DialogTitle>
+					<DialogTitle className="text-white">Update Sensor</DialogTitle>
 				</DialogHeader>
 				<div className="space-y-3">
-					<div className="flex items-center justify-between">
+					<div className="text-white flex items-center justify-between">
 						<Label className="flex items-center gap-2">
 							<Thermometer className="h-4 w-4" />
 							Temperature
@@ -46,7 +46,7 @@ export default function TemperatureModal({ isConnected, temperatureData, onChang
 						min={-10}
 						step={0.1}
 						disabled={!isConnected || !temperatureData.enabled}
-						className="w-full"
+						className="w-full [&_[data-orientation=horizontal]]:bg-gray-700 [&_[role=slider]]:bg-blue-500 [&_[role=slider]]:border-blue-500 [&_.absolute.h-full]:bg-gray-500 cursor-pointer"
 					/>
 					<div className="flex justify-between text-xs text-muted-foreground">
 						<span>-10°C</span>
@@ -56,7 +56,7 @@ export default function TemperatureModal({ isConnected, temperatureData, onChang
 
 				{/* Humidity Slider */}
 				<div className="space-y-3">
-					<div className="flex items-center justify-between">
+					<div className="text-white flex items-center justify-between">
 						<Label className="flex items-center gap-2">
 							<Droplets className="h-4 w-4" />
 							Humidity
@@ -70,7 +70,7 @@ export default function TemperatureModal({ isConnected, temperatureData, onChang
 						min={0}
 						step={0.1}
 						disabled={!isConnected || !temperatureData.enabled}
-						className="w-full"
+						className="w-full [&_[data-orientation=horizontal]]:bg-gray-700 [&_[role=slider]]:bg-blue-500 [&_[role=slider]]:border-blue-500 [&_.absolute.h-full]:bg-gray-500 cursor-pointer"
 					/>
 					<div className="flex justify-between text-xs text-muted-foreground">
 						<span>0%</span>
@@ -79,7 +79,7 @@ export default function TemperatureModal({ isConnected, temperatureData, onChang
 				</div>
 
 				{/* Location Dropdown */}
-				<div className="space-y-2">
+				<div className="space-y-3 w-full text-white">
 					<Label className="flex items-center gap-2">
 						<MapPin className="h-4 w-4" />
 						Location
@@ -89,10 +89,10 @@ export default function TemperatureModal({ isConnected, temperatureData, onChang
 						onValueChange={(value: string) => onChange("location", value)}
 						disabled={!isConnected || !temperatureData.enabled}
 					>
-						<SelectTrigger>
+						<SelectTrigger className="w-full">
 							<SelectValue />
 						</SelectTrigger>
-						<SelectContent>
+						<SelectContent className="bg-black text-white">
 							{locations.map((location) => (
 								<SelectItem key={location} value={location}>{location}</SelectItem>
 							))}
@@ -100,10 +100,10 @@ export default function TemperatureModal({ isConnected, temperatureData, onChang
 					</Select>
 				</div>
 
-				<div className="flex items-center gap-2 text-xs text-muted-foreground">
-					<Send className="h-3 w-3" />
-					<span>Auto-publishes to sensors/temperature</span>
-				</div>
+				{/* <div className="flex items-center gap-2 text-xs text-muted-foreground"> */}
+				{/* 	<Send className="h-3 w-3" /> */}
+				{/* 	<span>Auto-publishes to sensors/temperature</span> */}
+				{/* </div> */}
 
 			</DialogContent>
 		</Dialog>

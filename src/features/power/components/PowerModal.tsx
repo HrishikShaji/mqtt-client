@@ -26,130 +26,128 @@ export default function PowerModal({ isConnected, powerData, onChange }: Props) 
 			<DialogTrigger className="cursor-pointer text-white hover:text-blue-500">
 				<Settings2 />
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="sm:max-w-[425px] space-y-5 bg-black/20 dark:bg-black/10 backdrop-blur-xl border border-white/20">
 				<DialogHeader>
-					<DialogTitle>Update Power Sensor</DialogTitle>
+					<DialogTitle className="text-white">Update Power Sensor</DialogTitle>
 				</DialogHeader>
-				<div className="space-y-6">
-					{/* Voltage Slider */}
-					<div className="space-y-3">
-						<div className="flex items-center justify-between">
-							<Label className="flex items-center gap-2">
-								<Zap className="h-4 w-4" />
-								Voltage
-							</Label>
-							<span className="text-sm font-medium">{formatValue(powerData.voltage)}V</span>
-						</div>
-						<Slider
-							value={[powerData.voltage]}
-							onValueChange={(value) => onChange("voltage", value[0])}
-							max={300}
-							min={100}
-							step={0.1}
-							disabled={!isConnected || !powerData.enabled}
-							className="w-full"
-						/>
-						<div className="flex justify-between text-xs text-muted-foreground">
-							<span>100V</span>
-							<span>300V</span>
-						</div>
+				{/* Voltage Slider */}
+				<div className="space-y-3 text-white">
+					<div className="flex items-center justify-between">
+						<Label className="flex items-center gap-2">
+							<Zap className="h-4 w-4" />
+							Voltage
+						</Label>
+						<span className="text-sm font-medium">{formatValue(powerData.voltage)}V</span>
 					</div>
-
-					{/* Current Slider */}
-					<div className="space-y-3">
-						<div className="flex items-center justify-between">
-							<Label>Current (A)</Label>
-							<span className="text-sm font-medium">{formatValue(powerData.current, 2)}A</span>
-						</div>
-						<Slider
-							value={[powerData.current]}
-							onValueChange={(value) => onChange("current", value[0])}
-							max={50}
-							min={0}
-							step={0.01}
-							disabled={!isConnected || !powerData.enabled}
-							className="w-full"
-						/>
-						<div className="flex justify-between text-xs text-muted-foreground">
-							<span>0A</span>
-							<span>50A</span>
-						</div>
-					</div>
-
-					{/* Power Slider */}
-					<div className="space-y-3">
-						<div className="flex items-center justify-between">
-							<Label>Power (W)</Label>
-							<span className="text-sm font-medium">{formatValue(powerData.power, 0)}W</span>
-						</div>
-						<Slider
-							value={[powerData.power]}
-							onValueChange={(value) => onChange("power", value[0])}
-							max={10000}
-							min={0}
-							step={1}
-							disabled={!isConnected || !powerData.enabled}
-							className="w-full"
-						/>
-						<div className="flex justify-between text-xs text-muted-foreground">
-							<span>0W</span>
-							<span>10kW</span>
-						</div>
-					</div>
-
-					{/* Frequency Slider */}
-					<div className="space-y-3">
-						<div className="flex items-center justify-between">
-							<Label>Frequency (Hz)</Label>
-							<span className="text-sm font-medium">{formatValue(powerData.frequency, 2)}Hz</span>
-						</div>
-						<Slider
-							value={[powerData.frequency]}
-							onValueChange={(value) => onChange("frequency", value[0])}
-							max={65}
-							min={45}
-							step={0.01}
-							disabled={!isConnected || !powerData.enabled}
-							className="w-full"
-						/>
-						<div className="flex justify-between text-xs text-muted-foreground">
-							<span>45Hz</span>
-							<span>65Hz</span>
-						</div>
-					</div>
-
-					{/* Power Factor Slider */}
-					<div className="space-y-3">
-						<div className="flex items-center justify-between">
-							<Label>Power Factor</Label>
-							<span className="text-sm font-medium">{formatValue(powerData.powerFactor, 3)}</span>
-						</div>
-						<Slider
-							value={[powerData.powerFactor]}
-							onValueChange={(value) => onChange("powerFactor", value[0])}
-							max={1}
-							min={0}
-							step={0.001}
-							disabled={!isConnected || !powerData.enabled}
-							className="w-full"
-						/>
-						<div className="flex justify-between text-xs text-muted-foreground">
-							<span>0.000</span>
-							<span>1.000</span>
-						</div>
-					</div>
-
-					{/* Monitoring Toggle */}
-					<div className="flex items-center space-x-2">
-						<Switch
-							id="monitoring"
-							checked={powerData.monitoring}
-							onCheckedChange={(checked) => onChange("monitoring", checked)}
-							disabled={!isConnected || !powerData.enabled}
-						/>
-						<Label htmlFor="monitoring">Continuous monitoring</Label>
+					<Slider
+						value={[powerData.voltage]}
+						onValueChange={(value) => onChange("voltage", value[0])}
+						max={300}
+						min={100}
+						step={0.1}
+						disabled={!isConnected || !powerData.enabled}
+						className="w-full [&_[data-orientation=horizontal]]:bg-gray-700 [&_[role=slider]]:bg-blue-500 [&_[role=slider]]:border-blue-500 [&_.absolute.h-full]:bg-gray-500 cursor-pointer"
+					/>
+					<div className="flex justify-between text-xs text-muted-foreground">
+						<span>100V</span>
+						<span>300V</span>
 					</div>
 				</div>
+
+				{/* Current Slider */}
+				<div className="space-y-3 text-white">
+					<div className="flex items-center justify-between">
+						<Label>Current (A)</Label>
+						<span className="text-sm font-medium">{formatValue(powerData.current, 2)}A</span>
+					</div>
+					<Slider
+						value={[powerData.current]}
+						onValueChange={(value) => onChange("current", value[0])}
+						max={50}
+						min={0}
+						step={0.01}
+						disabled={!isConnected || !powerData.enabled}
+						className="w-full [&_[data-orientation=horizontal]]:bg-gray-700 [&_[role=slider]]:bg-blue-500 [&_[role=slider]]:border-blue-500 [&_.absolute.h-full]:bg-gray-500 cursor-pointer"
+					/>
+					<div className="flex justify-between text-xs text-muted-foreground">
+						<span>0A</span>
+						<span>50A</span>
+					</div>
+				</div>
+
+				{/* Power Slider */}
+				<div className="space-y-3 text-white">
+					<div className="flex items-center justify-between">
+						<Label>Power (W)</Label>
+						<span className="text-sm font-medium">{formatValue(powerData.power, 0)}W</span>
+					</div>
+					<Slider
+						value={[powerData.power]}
+						onValueChange={(value) => onChange("power", value[0])}
+						max={10000}
+						min={0}
+						step={1}
+						disabled={!isConnected || !powerData.enabled}
+						className="w-full [&_[data-orientation=horizontal]]:bg-gray-700 [&_[role=slider]]:bg-blue-500 [&_[role=slider]]:border-blue-500 [&_.absolute.h-full]:bg-gray-500 cursor-pointer"
+					/>
+					<div className="flex justify-between text-xs text-muted-foreground">
+						<span>0W</span>
+						<span>10kW</span>
+					</div>
+				</div>
+
+				{/* Frequency Slider */}
+				<div className="space-y-3 text-white">
+					<div className="flex items-center justify-between">
+						<Label>Frequency (Hz)</Label>
+						<span className="text-sm font-medium">{formatValue(powerData.frequency, 2)}Hz</span>
+					</div>
+					<Slider
+						value={[powerData.frequency]}
+						onValueChange={(value) => onChange("frequency", value[0])}
+						max={65}
+						min={45}
+						step={0.01}
+						disabled={!isConnected || !powerData.enabled}
+						className="w-full [&_[data-orientation=horizontal]]:bg-gray-700 [&_[role=slider]]:bg-blue-500 [&_[role=slider]]:border-blue-500 [&_.absolute.h-full]:bg-gray-500 cursor-pointer"
+					/>
+					<div className="flex justify-between text-xs text-muted-foreground">
+						<span>45Hz</span>
+						<span>65Hz</span>
+					</div>
+				</div>
+
+				{/* Power Factor Slider */}
+				<div className="space-y-3 text-white">
+					<div className="flex items-center justify-between">
+						<Label>Power Factor</Label>
+						<span className="text-sm font-medium">{formatValue(powerData.powerFactor, 3)}</span>
+					</div>
+					<Slider
+						value={[powerData.powerFactor]}
+						onValueChange={(value) => onChange("powerFactor", value[0])}
+						max={1}
+						min={0}
+						step={0.001}
+						disabled={!isConnected || !powerData.enabled}
+						className="w-full [&_[data-orientation=horizontal]]:bg-gray-700 [&_[role=slider]]:bg-blue-500 [&_[role=slider]]:border-blue-500 [&_.absolute.h-full]:bg-gray-500 cursor-pointer"
+					/>
+					<div className="flex justify-between text-xs text-muted-foreground">
+						<span>0.000</span>
+						<span>1.000</span>
+					</div>
+				</div>
+
+				{/* Monitoring Toggle */}
+				{/* <div className="flex items-center space-x-2"> */}
+				{/* 	<Switch */}
+				{/* 		id="monitoring" */}
+				{/* 		checked={powerData.monitoring} */}
+				{/* 		onCheckedChange={(checked) => onChange("monitoring", checked)} */}
+				{/* 		disabled={!isConnected || !powerData.enabled} */}
+				{/* 	/> */}
+				{/* 	<Label htmlFor="monitoring">Continuous monitoring</Label> */}
+				{/* </div> */}
 			</DialogContent>
 		</Dialog>
 	)

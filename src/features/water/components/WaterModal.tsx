@@ -28,113 +28,111 @@ export default function WaterModal({ isConnected, waterData, onChange }: Props) 
 			<DialogTrigger className="cursor-pointer text-white hover:text-blue-500">
 				<Settings2 />
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="sm:max-w-[425px] space-y-5 bg-black/20 dark:bg-black/10 backdrop-blur-xl border border-white/20">
 				<DialogHeader>
-					<DialogTitle>Update Water Level Sensor</DialogTitle>
+					<DialogTitle className="text-white">Update Water Level Sensor</DialogTitle>
 				</DialogHeader>
-				<div className="space-y-6">
-					{/* Water Level Slider */}
-					<div className="space-y-3">
-						<div className="flex items-center justify-between">
-							<Label className="flex items-center gap-2">
-								<Gauge className="h-4 w-4" />
-								Water Level
-							</Label>
-							<span className="text-sm font-medium">{waterData.level}%</span>
-						</div>
-						<Slider
-							value={[waterData.level]}
-							onValueChange={(value) => onChange("level", value[0])}
-							max={100}
-							min={0}
-							step={1}
-							disabled={!isConnected || !waterData.enabled}
-							className="w-full"
-						/>
-						<div className="flex justify-between text-xs text-muted-foreground">
-							<span>Empty</span>
-							<span>Full</span>
-						</div>
-					</div>
-
-					{/* Tank Capacity Dropdown */}
-					<div className="space-y-2">
-						<Label>Tank Capacity</Label>
-						<Select
-							value={waterData.capacity.toString()}
-							onValueChange={(value) => onChange("capacity", parseInt(value))}
-							disabled={!isConnected || !waterData.enabled}
-						>
-							<SelectTrigger>
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								{tankCapacities.map((capacity) => (
-									<SelectItem key={capacity} value={capacity.toString()}>{capacity}L</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					</div>
-
-					{/* Status Dropdown */}
-					<div className="space-y-2">
-						<Label>Status</Label>
-						<Select
-							value={waterData.status}
-							onValueChange={(value) => onChange("status", value)}
-							disabled={!isConnected || !waterData.enabled}
-						>
-							<SelectTrigger>
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="normal">Normal</SelectItem>
-								<SelectItem value="low">Low</SelectItem>
-								<SelectItem value="critical">Critical</SelectItem>
-								<SelectItem value="full">Full</SelectItem>
-								<SelectItem value="overflow">Overflow</SelectItem>
-							</SelectContent>
-						</Select>
-					</div>
-
-					{/* Location Dropdown */}
-					<div className="space-y-2">
+				{/* Water Level Slider */}
+				<div className="space-y-3">
+					<div className="flex items-center justify-between text-white">
 						<Label className="flex items-center gap-2">
-							<MapPin className="h-4 w-4" />
-							Location
+							<Gauge className="h-4 w-4" />
+							Water Level
 						</Label>
-						<Select
-							value={waterData.location}
-							onValueChange={(value) => onChange("location", value)}
-							disabled={!isConnected || !waterData.enabled}
-						>
-							<SelectTrigger>
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								{tankLocations.map((location) => (
-									<SelectItem key={location} value={location}>{location}</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
+						<span className="text-sm font-medium">{waterData.level}%</span>
 					</div>
-
-					{/* Alerts Toggle */}
-					<div className="flex items-center space-x-2">
-						<Switch
-							id="alerts"
-							checked={waterData.alertsEnabled}
-							onCheckedChange={(checked) => onChange("alertsEnabled", checked)}
-							disabled={!isConnected || !waterData.enabled}
-						/>
-						<Label htmlFor="alerts">Low level alerts</Label>
-					</div>
-
-					<div className="flex items-center gap-2 text-xs text-muted-foreground">
-						<Send className="h-3 w-3" />
-						<span>Auto-publishes to sensors/waterlevel</span>
+					<Slider
+						value={[waterData.level]}
+						onValueChange={(value) => onChange("level", value[0])}
+						max={100}
+						min={0}
+						step={1}
+						disabled={!isConnected || !waterData.enabled}
+						className="w-full [&_[data-orientation=horizontal]]:bg-gray-700 [&_[role=slider]]:bg-blue-500 [&_[role=slider]]:border-blue-500 [&_.absolute.h-full]:bg-gray-500 cursor-pointer"
+					/>
+					<div className="flex justify-between text-xs text-muted-foreground">
+						<span>Empty</span>
+						<span>Full</span>
 					</div>
 				</div>
+
+				{/* Tank Capacity Dropdown */}
+				<div className="space-y-3 w-full text-white">
+					<Label>Tank Capacity</Label>
+					<Select
+						value={waterData.capacity.toString()}
+						onValueChange={(value) => onChange("capacity", parseInt(value))}
+						disabled={!isConnected || !waterData.enabled}
+					>
+						<SelectTrigger className="w-full">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent className="text-white bg-black">
+							{tankCapacities.map((capacity) => (
+								<SelectItem key={capacity} value={capacity.toString()}>{capacity}L</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+				</div>
+
+				{/* Status Dropdown */}
+				<div className="space-y-3 w-full text-white">
+					<Label>Status</Label>
+					<Select
+						value={waterData.status}
+						onValueChange={(value) => onChange("status", value)}
+						disabled={!isConnected || !waterData.enabled}
+					>
+						<SelectTrigger className="w-full">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent className="text-white bg-black">
+							<SelectItem value="normal">Normal</SelectItem>
+							<SelectItem value="low">Low</SelectItem>
+							<SelectItem value="critical">Critical</SelectItem>
+							<SelectItem value="full">Full</SelectItem>
+							<SelectItem value="overflow">Overflow</SelectItem>
+						</SelectContent>
+					</Select>
+				</div>
+
+				{/* Location Dropdown */}
+				<div className="space-y-3 w-full text-white">
+					<Label className="flex items-center gap-2">
+						<MapPin className="h-4 w-4" />
+						Location
+					</Label>
+					<Select
+						value={waterData.location}
+						onValueChange={(value) => onChange("location", value)}
+						disabled={!isConnected || !waterData.enabled}
+					>
+						<SelectTrigger className="w-full">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent className="text-white bg-black ">
+							{tankLocations.map((location) => (
+								<SelectItem key={location} value={location}>{location}</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+				</div>
+
+				{/* Alerts Toggle */}
+				{/* <div className="flex items-center space-x-2"> */}
+				{/* 	<Switch */}
+				{/* 		id="alerts" */}
+				{/* 		checked={waterData.alertsEnabled} */}
+				{/* 		onCheckedChange={(checked) => onChange("alertsEnabled", checked)} */}
+				{/* 		disabled={!isConnected || !waterData.enabled} */}
+				{/* 	/> */}
+				{/* 	<Label htmlFor="alerts">Low level alerts</Label> */}
+				{/* </div> */}
+				{/**/}
+				{/* <div className="flex items-center gap-2 text-xs text-muted-foreground"> */}
+				{/* 	<Send className="h-3 w-3" /> */}
+				{/* 	<span>Auto-publishes to sensors/waterlevel</span> */}
+				{/* </div> */}
 			</DialogContent>
 		</Dialog>
 	)
