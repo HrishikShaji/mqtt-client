@@ -10,6 +10,10 @@ import PowerSensor from "./PowerSensor"
 import { Power, Wifi, WifiOff } from "lucide-react"
 import { SERVER_URL } from "@/lib/variables"
 import SwitchSensor from "./SwitchSensor"
+import SwitchCard from "@/features/switch/components/SwitchCard"
+import TemperatureCard from "@/features/temperature/components/TemperatureCard"
+import WaterCard from "@/features/water/components/WaterCard"
+import PowerCard from "@/features/power/components/PowerCard"
 
 export default function ControlPanel() {
 	const [client, setClient] = useState<MqttClient | null>(null)
@@ -63,46 +67,52 @@ export default function ControlPanel() {
 		<div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
 			<div className="max-w-6xl mx-auto space-y-8">
 				{/* Header */}
-				<div className="text-center space-y-2">
-					<h1 className="text-4xl font-bold tracking-tight text-balance">Trailer Control Panel</h1>
-					<p className="text-muted-foreground text-lg">Interactive sensor control with sliders and toggles</p>
+				<div className="text-center space-y-2 w-full flex justify-between items-center">
+					<div>
+						<h1 className="text-4xl font-bold tracking-tight text-balance">Trailer Control Panel</h1>
+						<p className="text-muted-foreground text-lg">Interactive sensor control with sliders and toggles</p>
+
+					</div>
+					{isConnected ? <Wifi className="h-5 w-5 text-green-600" /> : <WifiOff className="h-5 w-5 text-red-600" />}
 				</div>
 
-				{/* Connection Status */}
-				<Card className="border-2">
-					<CardContent className="pt-6">
-						<div className="flex items-center justify-center gap-3">
-							{isConnected ? <Wifi className="h-5 w-5 text-green-600" /> : <WifiOff className="h-5 w-5 text-red-600" />}
-							<Badge variant={isConnected ? "default" : "destructive"} className="text-sm px-3 py-1">
-								{connectionStatus}
-							</Badge>
-						</div>
-					</CardContent>
-				</Card>
-
-				{/* Main Switch Control */}
-
 				{/* Sensor Controls Grid */}
-				<div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-					<SwitchSensor
+				<div className="grid grid-cols-1 w-[50%] lg:grid-cols-2 gap-6">
+					<SwitchCard
 						isConnected={isConnected}
 						client={client}
 					/>
+					<TemperatureCard
+						isConnected={isConnected}
+						client={client}
+					/>
+					<WaterCard
+						isConnected={isConnected}
+						client={client}
+					/>
+					<PowerCard
+						isConnected={isConnected}
+						client={client}
+					/>
+					{/* <SwitchSensor */}
+					{/* 	isConnected={isConnected} */}
+					{/* 	client={client} */}
+					{/* /> */}
 					{/* Temperature Sensor Control */}
-					<TemperatureSensor
-						isConnected={isConnected}
-						client={client}
-					/>
+					{/* <TemperatureSensor */}
+					{/* 	isConnected={isConnected} */}
+					{/* 	client={client} */}
+					{/* /> */}
 					{/* Water Level Sensor Control */}
-					<WaterSensor
-						isConnected={isConnected}
-						client={client}
-					/>
+					{/* <WaterSensor */}
+					{/* 	isConnected={isConnected} */}
+					{/* 	client={client} */}
+					{/* /> */}
 					{/* Power Sensor Control */}
-					<PowerSensor
-						isConnected={isConnected}
-						client={client}
-					/>
+					{/* <PowerSensor */}
+					{/* 	isConnected={isConnected} */}
+					{/* 	client={client} */}
+					{/* /> */}
 				</div>
 
 			</div>
