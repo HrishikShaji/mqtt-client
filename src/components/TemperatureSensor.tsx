@@ -7,6 +7,7 @@ import { MqttClient } from "mqtt";
 import { formatValue, getStatusColor } from "@/lib/utils";
 import { TemperatureSensorType } from "@/types/sensor-types";
 import TemperatureModal from "./TemperatureModal";
+import useTemperatureSensor from "@/features/temperature/hooks/useTemperatureSensor";
 
 
 interface Props {
@@ -15,40 +16,7 @@ interface Props {
 }
 
 export default function TemperatureSensor({ client, isConnected }: Props) {
-
-	const [temperatureData, setTemperatureData] = useState<TemperatureSensorType>({
-		temperature: 25.0,
-		humidity: 60.0,
-		sensor: "DHT22",
-		location: "Living Room",
-		enabled: true
-	})
-	const handleTemperatureChange = (field: string, value: any) => {
-		const newData = { ...temperatureData, [field]: value }
-		setTemperatureData(newData)
-		publishSensorData(newData)
-	}
-
-	useEffect(() => {
-		publishSensorData(temperatureData)
-	}, [])
-
-	const publishSensorData = (data: TemperatureSensorType) => {
-		if (client && isConnected && data.enabled) {
-			const message = {
-				...data,
-				timestamp: new Date().toISOString()
-			}
-
-			client.publish("sensors/temperature", JSON.stringify(message), { qos: 0, retain: true }, (err) => {
-				if (err) {
-					console.error(`Publish error for Temperature:`, err)
-				} else {
-					console.log(`Temperature data published:`, message)
-				}
-			})
-		}
-	}
+	const { handleTemperatureChange, temperatureData } = useTemperatureSensor({ client, isConnected })
 
 	return (
 		<Card className="border-2">

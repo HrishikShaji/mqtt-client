@@ -8,8 +8,8 @@ import TemperatureSensor from "./TemperatureSensor"
 import WaterSensor from "./WaterSensor"
 import PowerSensor from "./PowerSensor"
 import { Power, Wifi, WifiOff } from "lucide-react"
-import SwitchControl from "./SwitchControl"
 import { SERVER_URL } from "@/lib/variables"
+import SwitchSensor from "./SwitchSensor"
 
 export default function ControlPanel() {
 	const [client, setClient] = useState<MqttClient | null>(null)
@@ -84,7 +84,7 @@ export default function ControlPanel() {
 
 				{/* Sensor Controls Grid */}
 				<div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-					<SwitchControl
+					<SwitchSensor
 						isConnected={isConnected}
 						client={client}
 					/>

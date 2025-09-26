@@ -8,6 +8,7 @@ import { getStatusColor } from "@/lib/utils";
 import { Progress } from "./ui/progress";
 import { WaterSensorType } from "@/types/sensor-types";
 import WaterModal from "./WaterModal";
+import useWaterSensor from "@/features/water/hooks/useWaterSensor";
 
 interface Props {
 	client: MqttClient;
@@ -15,43 +16,7 @@ interface Props {
 }
 
 export default function WaterSensor({ client, isConnected }: Props) {
-	const [waterLevelData, setWaterLevelData] = useState<WaterSensorType>({
-		level: 75,
-		capacity: 1000,
-		status: "normal",
-		sensor: "Ultrasonic",
-		location: "Main Tank",
-		enabled: true,
-		alertsEnabled: true
-	})
-
-	useEffect(() => {
-		publishSensorData(waterLevelData)
-	}, [])
-
-	const publishSensorData = (data: WaterSensorType) => {
-		if (client && isConnected && data.enabled) {
-			const message = {
-				...data,
-				timestamp: new Date().toISOString()
-			}
-
-			client.publish("sensors/waterlevel", JSON.stringify(message), { qos: 0, retain: true }, (err) => {
-				if (err) {
-					console.error(`Publish error for water:`, err)
-				} else {
-					console.log(`water data published:`, message)
-				}
-			})
-		}
-	}
-
-	const handleWaterLevelChange = (field: string, value: any) => {
-		const newData = { ...waterLevelData, [field]: value }
-		setWaterLevelData(newData)
-		publishSensorData(newData)
-	}
-
+	const { waterLevelData, handleWaterLevelChange } = useWaterSensor({ client, isConnected })
 	return (
 		<Card className="border-2">
 			<CardHeader>

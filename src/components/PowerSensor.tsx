@@ -2,12 +2,11 @@ import { Send, Zap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Switch } from "./ui/switch";
 import { Badge } from "./ui/badge";
-import { useEffect, useState } from "react";
 import { MqttClient } from "mqtt";
 import { formatValue } from "@/lib/utils";
-import { PowerSensorType } from "@/types/sensor-types";
 import { Separator } from "./ui/separator";
 import PowerModal from "./PowerModal";
+import usePowerSensor from "@/features/power/hooks/usePowerSensor";
 
 interface Props {
 	client: MqttClient;
@@ -15,44 +14,7 @@ interface Props {
 }
 
 export default function PowerSensor({ client, isConnected }: Props) {
-	const [powerData, setPowerData] = useState<PowerSensorType>({
-		voltage: 220.0,
-		current: 5.5,
-		power: 1210,
-		frequency: 50.0,
-		powerFactor: 0.95,
-		sensor: "Power Meter",
-		phase: "Single",
-		enabled: true,
-		monitoring: true
-	})
-
-	useEffect(() => {
-		publishSensorData(powerData)
-	}, [])
-
-	const publishSensorData = (data: PowerSensorType) => {
-		if (client && isConnected && data.enabled) {
-			const message = {
-				...data,
-				timestamp: new Date().toISOString()
-			}
-
-			client.publish("sensors/power", JSON.stringify(message), { qos: 0, retain: true }, (err) => {
-				if (err) {
-					console.error(`Publish error for power:`, err)
-				} else {
-					console.log(`power data published:`, message)
-				}
-			})
-		}
-	}
-
-	const handlePowerChange = (field: string, value: any) => {
-		const newData = { ...powerData, [field]: value }
-		setPowerData(newData)
-		publishSensorData(newData)
-	}
+	const { powerData, handlePowerChange } = usePowerSensor({ client, isConnected })
 
 	return (
 		<Card className="border-2">

@@ -1,9 +1,8 @@
 import { Droplets, MapPin, Power, Send, Thermometer, Zap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { useEffect, useState } from "react";
 import { MqttClient } from "mqtt";
 import { Button } from "./ui/button";
-import { SwitchSensorType } from "@/types/sensor-types";
+import useSwitchSensor from "@/features/switch/hooks/useSwitchSensor";
 
 interface Props {
 	client: MqttClient;
@@ -11,43 +10,8 @@ interface Props {
 }
 
 
-export default function SwitchControl({ client, isConnected }: Props) {
-	const [switchState, setSwitchState] = useState(false)
-
-	const toggleSwitch = () => {
-		const newState = !switchState
-		setSwitchState(newState)
-		if (client && isConnected) {
-			const newState = !switchState
-			setSwitchState(newState)
-			publishSensorData(newState)
-		}
-	}
-
-	useEffect(() => {
-		publishSensorData(switchState)
-	}, [])
-
-	const publishSensorData = (newState: boolean) => {
-		if (client && isConnected) {
-
-			const message: SwitchSensorType = {
-				state: newState,
-				timestamp: new Date().toISOString(),
-				device: "main-switch",
-			}
-
-			client.publish("switch/state", JSON.stringify(message), { qos: 0, retain: true }, (err) => {
-				if (err) {
-					console.error("Publish error:", err)
-				} else {
-					console.log("Switch state published:", message.state)
-				}
-			})
-		}
-
-	}
-
+export default function SwitchSensor({ client, isConnected }: Props) {
+	const { switchState, toggleSwitch } = useSwitchSensor({ client, isConnected })
 	return (
 		<Card className="border-2">
 			<CardHeader className="text-center">
