@@ -64,58 +64,64 @@ export default function ControlPanel() {
 	if (!client) return null
 
 	return (
-		<div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
-			<div className="max-w-6xl mx-auto space-y-8">
-				{/* Header */}
-				<div className="text-center space-y-2 w-full flex justify-between items-center">
-					<div>
-						<h1 className="text-4xl font-bold tracking-tight text-balance">Trailer Control Panel</h1>
-						<p className="text-muted-foreground text-lg">Interactive sensor control with sliders and toggles</p>
+		<div className="h-screen p-4 md:p-6 lg:p-8 relative"
+			style={{
+				backgroundImage: "url('/home_m_2.jpg')",
+				backgroundSize: 'cover',
+				backgroundRepeat: 'no-repeat',
+				backgroundPosition: 'center'
+			}}
+		>
+			<div className="text-center space-y-2 px-10  py-5  w-full flex left-0 top-0 justify-between absolute z-10 items-center">
+				<div className="text-left">
+					<h1 className="text-4xl font-bold  text-white">Trailer Control Panel</h1>
+					<p className="text-muted-foreground text-lg">Interactive sensor control with sliders and toggles</p>
 
-					</div>
-					{isConnected ? <Wifi className="h-5 w-5 text-green-600" /> : <WifiOff className="h-5 w-5 text-red-600" />}
 				</div>
-
-				{/* Sensor Controls Grid */}
-				<div className="grid grid-cols-1 w-[50%] lg:grid-cols-2 gap-6">
-					<SwitchCard
-						isConnected={isConnected}
-						client={client}
-					/>
-					<TemperatureCard
-						isConnected={isConnected}
-						client={client}
-					/>
-					<WaterCard
-						isConnected={isConnected}
-						client={client}
-					/>
-					<PowerCard
-						isConnected={isConnected}
-						client={client}
-					/>
-					{/* <SwitchSensor */}
-					{/* 	isConnected={isConnected} */}
-					{/* 	client={client} */}
-					{/* /> */}
-					{/* Temperature Sensor Control */}
-					{/* <TemperatureSensor */}
-					{/* 	isConnected={isConnected} */}
-					{/* 	client={client} */}
-					{/* /> */}
-					{/* Water Level Sensor Control */}
-					{/* <WaterSensor */}
-					{/* 	isConnected={isConnected} */}
-					{/* 	client={client} */}
-					{/* /> */}
-					{/* Power Sensor Control */}
-					{/* <PowerSensor */}
-					{/* 	isConnected={isConnected} */}
-					{/* 	client={client} */}
-					{/* /> */}
-				</div>
-
+				{isConnected ? <Wifi className="h-5 w-5 text-green-600" /> : <WifiOff className="h-5 w-5 text-red-600" />}
 			</div>
+			{/* Header */}
+
+			{/* Sensor Controls Grid */}
+			<div className="absolute top-0 left-0  bg-gradient-to-r from-black/50 to-black h-full w-full"></div>
+			<div className="grid grid-cols-1  absolute z-10 top-40 right-10 w-[40%] lg:grid-cols-2 gap-6">
+				<SwitchCard
+					isConnected={isConnected}
+					client={client}
+				/>
+				<TemperatureCard
+					isConnected={isConnected}
+					client={client}
+				/>
+				<WaterCard
+					isConnected={isConnected}
+					client={client}
+				/>
+				<PowerCard
+					isConnected={isConnected}
+					client={client}
+				/>
+				{/* <SwitchSensor */}
+				{/* 	isConnected={isConnected} */}
+				{/* 	client={client} */}
+				{/* /> */}
+				{/* Temperature Sensor Control */}
+				{/* <TemperatureSensor */}
+				{/* 	isConnected={isConnected} */}
+				{/* 	client={client} */}
+				{/* /> */}
+				{/* Water Level Sensor Control */}
+				{/* <WaterSensor */}
+				{/* 	isConnected={isConnected} */}
+				{/* 	client={client} */}
+				{/* /> */}
+				{/* Power Sensor Control */}
+				{/* <PowerSensor */}
+				{/* 	isConnected={isConnected} */}
+				{/* 	client={client} */}
+				{/* /> */}
+			</div>
+
 		</div>
 	)
 }

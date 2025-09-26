@@ -23,8 +23,8 @@ interface Props {
 export default function PowerModal({ isConnected, powerData, onChange }: Props) {
 	return (
 		<Dialog>
-			<DialogTrigger asChild>
-				<Button variant="outline"><Settings2 /></Button>
+			<DialogTrigger className="cursor-pointer text-white hover:text-blue-500">
+				<Settings2 />
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>

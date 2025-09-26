@@ -24,8 +24,8 @@ const locations = ["Living Room", "Kitchen", "Bedroom", "Bathroom", "Garage", "B
 export default function TemperatureModal({ isConnected, temperatureData, onChange }: Props) {
 	return (
 		<Dialog>
-			<DialogTrigger asChild>
-				<Button variant="outline"><Settings2 /></Button>
+			<DialogTrigger className="cursor-pointer text-white hover:text-blue-500">
+				<Settings2 />
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>

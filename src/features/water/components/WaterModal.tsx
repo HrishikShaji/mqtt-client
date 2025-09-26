@@ -25,8 +25,8 @@ const tankCapacities = [500, 750, 1000, 1500, 2000, 2500, 3000, 5000]
 export default function WaterModal({ isConnected, waterData, onChange }: Props) {
 	return (
 		<Dialog>
-			<DialogTrigger asChild>
-				<Button variant="outline"><Settings2 /></Button>
+			<DialogTrigger className="cursor-pointer text-white hover:text-blue-500">
+				<Settings2 />
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
